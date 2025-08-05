@@ -11,6 +11,11 @@ router.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
+    if (!name || !email || !password) {
+      console.log("❌ Missing fields:", req.body);
+      return res.status(400).json({ message: 'All fields are required' });
+    }
+
     const userExist = await User.findOne({ email });
     if (userExist) {
       console.log("⚠️ User already exists:", email);
@@ -29,9 +34,10 @@ router.post('/register', async (req, res) => {
     console.log("✅ New user registered:", email);
 
     res.status(201).json({ message: 'User registered successfully' });
+
   } catch (err) {
-    console.error("❌ Registration error:", err); // <== THIS LINE ADDED
-    res.status(500).json({ message: 'Server error' });
+    console.error("❌ Registration error:", err);
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
