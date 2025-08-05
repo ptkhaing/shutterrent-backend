@@ -32,16 +32,12 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/uploads", express.static("uploads"));
 
-// Serve frontend static files
-const frontendPath = path.join(__dirname, "frontend", "dist");
-app.use(express.static(frontendPath));
-
-// ✅ Safe fallback for frontend routes
+// ✅ Safe fallback for unknown API routes only (no frontend build)
 app.get("*", (req, res) => {
   if (req.originalUrl.startsWith("/api")) {
     return res.status(404).json({ message: "API route not found" });
   }
-  res.sendFile(path.join(frontendPath, "index.html"));
+  res.status(404).send("Not Found");
 });
 
 // Connect to MongoDB and start server
