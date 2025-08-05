@@ -1,9 +1,14 @@
 const express = require("express");
 const router = express.Router();
+const mongoose = require("mongoose");
 const Listing = require("../models/Listing");
 const { authMiddleware } = require("../middleware/auth");
 const adminCheck = require("../middleware/adminCheck");
 const multer = require("multer");
+
+// ⚠️ Replace with an actual user ID from your MongoDB
+const REAL_USER_ID = "688a27b4101acf49cef2701b";
+const realUserObjectId = new mongoose.Types.ObjectId(REAL_USER_ID);
 
 // Multer config for image upload
 const storage = multer.diskStorage({
@@ -15,7 +20,6 @@ const storage = multer.diskStorage({
     cb(null, uniqueName);
   },
 });
-
 const upload = multer({ storage: storage });
 
 // @route   POST /api/listings
@@ -123,33 +127,34 @@ router.delete("/:id", authMiddleware, adminCheck, async (req, res) => {
   }
 });
 
-module.exports = router;
-// TEMP SEED ROUTE - REMOVE AFTER SEEDING
-const Listing = require("../models/Listing");
-
+// @route   POST /api/listings/seed
+// @desc    TEMP: Insert sample listings
 router.post("/seed", async (req, res) => {
   try {
     const sampleListings = [
       {
         title: "Canon EOS R6",
         description: "Full-frame mirrorless with 20.1MP, great for video.",
-        price: 45000,
+        pricePerDay: 45000,
         image: "sample1.jpg",
         category: "DSLR",
+        user: realUserObjectId
       },
       {
         title: "Sony A7 III",
         description: "Excellent low-light mirrorless camera.",
-        price: 50000,
+        pricePerDay: 50000,
         image: "sample2.jpg",
         category: "Mirrorless",
+        user: realUserObjectId
       },
       {
         title: "Panasonic Lumix GH6",
         description: "Perfect for high-quality 4K video shooting.",
-        price: 60000,
+        pricePerDay: 60000,
         image: "sample3.jpg",
         category: "Cinema",
+        user: realUserObjectId
       }
     ];
 
@@ -160,3 +165,5 @@ router.post("/seed", async (req, res) => {
     res.status(500).json({ message: "Error seeding listings" });
   }
 });
+
+module.exports = router;
