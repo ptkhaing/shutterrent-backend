@@ -55,5 +55,8 @@ router.post('/login', async (req, res) => {
 
 // ✅ Add this route
 router.put('/change-password', authMiddleware, changePassword);
-
+// Debug test route
+router.get('/test', (req, res) => {
+  res.json({ message: 'Auth route working!' });
+});
 module.exports = router;
