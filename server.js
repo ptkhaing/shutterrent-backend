@@ -32,12 +32,12 @@ app.use("/api/bookings", bookingRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/uploads", express.static("uploads"));
 
-// ✅ Safe fallback for unknown API routes only (no frontend build)
-app.get("*", (req, res) => {
+// ✅ Safe fallback for unknown API routes only
+app.use((req, res, next) => {
   if (req.originalUrl.startsWith("/api")) {
     return res.status(404).json({ message: "API route not found" });
   }
-  res.status(404).send("Not Found");
+  next();
 });
 
 // Connect to MongoDB and start server
