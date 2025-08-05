@@ -115,4 +115,5 @@ router.get("/bookings", authMiddleware, adminCheck, async (req, res) => {
     res.status(500).json({ message: "Failed to fetch bookings" });
   }
 });
+
 module.exports = router;
