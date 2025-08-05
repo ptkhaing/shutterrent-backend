@@ -124,3 +124,39 @@ router.delete("/:id", authMiddleware, adminCheck, async (req, res) => {
 });
 
 module.exports = router;
+// TEMP SEED ROUTE - REMOVE AFTER SEEDING
+const Listing = require("../models/Listing");
+
+router.post("/seed", async (req, res) => {
+  try {
+    const sampleListings = [
+      {
+        title: "Canon EOS R6",
+        description: "Full-frame mirrorless with 20.1MP, great for video.",
+        price: 45000,
+        image: "sample1.jpg",
+        category: "DSLR",
+      },
+      {
+        title: "Sony A7 III",
+        description: "Excellent low-light mirrorless camera.",
+        price: 50000,
+        image: "sample2.jpg",
+        category: "Mirrorless",
+      },
+      {
+        title: "Panasonic Lumix GH6",
+        description: "Perfect for high-quality 4K video shooting.",
+        price: 60000,
+        image: "sample3.jpg",
+        category: "Cinema",
+      }
+    ];
+
+    await Listing.insertMany(sampleListings);
+    res.json({ message: "✅ Sample listings inserted!" });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Error seeding listings" });
+  }
+});
