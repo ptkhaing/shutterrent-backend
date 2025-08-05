@@ -16,7 +16,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://your-frontend.vercel.app" // <-- Replace with actual deployed frontend URL
+"https://shutterrent-frontend.vercel.app"
   ],
   methods: "GET,POST,PUT,DELETE",
   credentials: true
